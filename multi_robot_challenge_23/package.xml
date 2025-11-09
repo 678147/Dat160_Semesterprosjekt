@@ -3,10 +3,30 @@
 <package format="3">
   <name>multi_robot_challenge_23</name>
   <version>0.0.0</version>
-  <description>TODO: Package description</description>
-  <maintainer email="hvlrobotics@todo.todo">hvlrobotics</maintainer>
+  <description>Multi-robot challenge med Bug2 controller,GotoPoint, og WallFollower.</description>
+
+  <maintainer email="todo@todo.todo">hvl</maintainer>
   <license>TODO: License declaration</license>
 
+  <!-- Build tool for Python packages -->
+  <buildtool_depend>ament_python</buildtool_depend>
+
+  <!-- Runtime deps (Python nodes) -->
+  <exec_depend>rclpy</exec_depend>
+  <exec_depend>geometry_msgs</exec_depend>
+  <exec_depend>sensor_msgs</exec_depend>
+  <exec_depend>nav_msgs</exec_depend>
+  <exec_depend>std_srvs</exec_depend>
+  <exec_depend>bug2_interfaces</exec_depend>
+
+  <!-- TF utils used by GoToPoint (import tf_transformations) -->
+  <exec_depend>tf_transformations</exec_depend>
+
+  <!-- Launch system (since you ship/bruker .launch.py) -->
+  <exec_depend>launch</exec_depend>
+  <exec_depend>launch_ros</exec_depend>
+
+  <!-- Tests (behold gjerne disse) -->
   <test_depend>ament_copyright</test_depend>
   <test_depend>ament_flake8</test_depend>
   <test_depend>ament_pep257</test_depend>
