@@ -12,22 +12,26 @@ class Bug2Controller(Node):
     def __init__(self):
         super().__init__('bug2_controller')
 
+        self.declare_parameter('robot_name', '')
+        robot_name = self.get_parameter('robot_name').get_parameter_value().string_value
+        ns = f'/{robot_name}' if robot_name else ''
+
         #Publisher til gotopoint noden at den skal være active (true) eller inactive (false)
-        self.go_active_pub = self.create_publisher(Bool, '/go_to_point/active', 10)
+        self.go_active_pub = self.create_publisher(Bool, f'{ns}/go_to_point/active', 10)
 
         #Service for å slå WallFollower av og på (setbool=True/false)
-        self.wall_follower_client = self.create_client(SetBool, 'wall_follow')
+        self.wall_follower_client = self.create_client(SetBool, f'{ns}/wall_follow')
         
         self.get_logger().info('Venter på WF')
 
         #Lytter på laserdata fra LIDAR, sensor qos fordi det kommer flere raske meldinger
-        self.laser_sub = self.create_subscription(LaserScan, '/scan', self.clbk_laser, qos_profile_sensor_data)
+        self.laser_sub = self.create_subscription(LaserScan, f'{ns}/scan', self.clbk_laser, qos_profile_sensor_data)
         
         # Målet (når vi klikker 2D Nav Goal i RViz eller publiserer PoseStamped manuelt)
-        self.goal_sub = self.create_subscription(PoseStamped, '/move_base_simple/goal', self.clbk_goal, 10)
+        self.goal_sub = self.create_subscription(PoseStamped, f'{ns}/move_base_simple/goal', self.clbk_goal, 10)
     
         #lytter på gotopoint/reached etter beskjed om målet er nådd, True når det er nådd
-        self.reached_sub = self.create_subscription(Bool, '/go_to_point/reached', self.clbk_reached, 10)
+        self.reached_sub = self.create_subscription(Bool, f'{ns}/go_to_point/reached', self.clbk_reached, 10)
         
         # States
         self.state = 'idle'          # 'idle' / 'go_to_point' / 'wall_following'

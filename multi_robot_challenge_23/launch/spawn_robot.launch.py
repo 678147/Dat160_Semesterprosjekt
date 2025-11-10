@@ -48,6 +48,10 @@ def generate_launch_description():
         'yaw',
         default_value='0.0'
     )
+    use_sim_time_arg = DeclareLaunchArgument(
+        'use_sim_time',
+        default_value='true'
+    )
 
     #Read launch arguments as a launch configuration object
     namespace = LaunchConfiguration('namespace')
@@ -109,6 +113,7 @@ def generate_launch_description():
         robot_x_pos_arg,
         robot_y_pos_arg,
         robot_yaw_arg,
+        use_sim_time_arg,
         robot_state_publisher,
         spawn_entity,
         tf_map_to_odom,

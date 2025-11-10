@@ -12,21 +12,25 @@ class GoToPoint(Node):
     def __init__(self):
         super().__init__('go_to_point')
         self.get_logger().info("Startet Go To Point-node.")
+        # support namespacing via parameter 'robot_name' (defaults to no namespace for single-robot)
+        self.declare_parameter('robot_name', '')
+        robot_name = self.get_parameter('robot_name').get_parameter_value().string_value
+        ns = f'/{robot_name}' if robot_name else ''
 
         #publisher til hjulkommando-topic, fart fremover og rotasjon til turtlebot
-        self.cmd_pub = self.create_publisher(Twist, '/cmd_vel', 10)
+        self.cmd_pub = self.create_publisher(Twist, f'{ns}/cmd_vel', 10)
         
         #Henter posisjon og retning fra tb hjul, odom.
-        self.odom_sub = self.create_subscription(Odometry, '/odom', self.clbk_odom, qos_profile_sensor_data)
+        self.odom_sub = self.create_subscription(Odometry, f'{ns}/odom', self.clbk_odom, qos_profile_sensor_data)
         
         #Får målposisjon fra rviz (når det klikkes på nav goal pose eller sender posestamps i odom frame)
-        self.goal_sub = self.create_subscription(PoseStamped, '/move_base_simple/goal', self.clbk_goal, 10)
+        self.goal_sub = self.create_subscription(PoseStamped, f'{ns}/move_base_simple/goal', self.clbk_goal, 10)
         
         #subscriber på /go_to_point/active fra controller som bestemmer om tb skal være aktiv eller ikke
-        self.active_sub = self.create_subscription(Bool, '/go_to_point/active', self.clbk_active, 10)
+        self.active_sub = self.create_subscription(Bool, f'{ns}/go_to_point/active', self.clbk_active, 10)
         
         #publisher til controller på /go_to_point/reached når målet er nådd
-        self.reached_pub = self.create_publisher(Bool, '/go_to_point/reached', 10)
+        self.reached_pub = self.create_publisher(Bool, f'{ns}/go_to_point/reached', 10)
 
         # Statevariables
         self.active = False #aktiv gotopoint eller ikke
