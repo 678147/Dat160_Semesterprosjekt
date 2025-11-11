@@ -13,7 +13,7 @@ def generate_launch_description():
     )
 
     aruco_node = Node(
-        package='ros2_aruco',
+        package='multi_robot_challenge_23',
         executable='aruco_node',
         namespace=namespace,
         parameters=[{"marker_size": 0.5},
