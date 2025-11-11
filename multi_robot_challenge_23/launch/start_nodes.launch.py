@@ -44,19 +44,15 @@ def generate_launch_description():
         per_robot_nodes += [
             Node(package=package_name, executable='go_to_point', name=f'go_to_point_{ns}', output='screen', parameters=[{'robot_name': ns, 'use_sim_time': use_sim_time}]),
             Node(package=package_name, executable='wall_follower', name=f'wall_follower_{ns}', output='screen', parameters=[{'robot_name': ns, 'use_sim_time': use_sim_time}]),
-            Node(package=package_name, executable='robot_controller', name=f'robot_controller_{ns}', output='screen', parameters=[{'robot_name': ns, 'use_sim_time': use_sim_time}]),
-            #Node(package=package_name, executable='bug2_controller', name=f'bug2_controller_{ns}', output='screen', parameters=[{'robot_name': ns, 'use_sim_time': use_sim_time}]),
+            #Node(package=package_name, executable='robot_controller', name=f'robot_controller_{ns}', output='screen', parameters=[{'robot_name': ns, 'use_sim_time': use_sim_time}]),
+            Node(package=package_name, executable='bug2_controller', name=f'bug2_controller_{ns}', output='screen', parameters=[{'robot_name': ns, 'use_sim_time': use_sim_time}]),
         ]
 
-    # Coordinator
-    # Start a small empty-map publisher that publishes a mostly-unknown map with
-    # small free patches at robot start locations. This publishes on /test_map so
-    # it doesn't conflict with any existing /map published by a map_server.
 
     coordinator_node = Node(
         package=package_name,
-        executable='robot_coordinator',
-        name='robot_coordinator',
+        executable='coordinator',
+        name='coordinator',
         output='screen',
         parameters=[{'use_sim_time': use_sim_time, 'map_topic': '/map'}]
     )
