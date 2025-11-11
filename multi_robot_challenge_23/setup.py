@@ -39,7 +39,7 @@ setup(
             'wall_follower = multi_robot_challenge_23.wallfollower:main',
             'coordinator = multi_robot_challenge_23.coordinator:main',
             'aruco_node = multi_robot_challenge_23.aruco_node:main',
-           # 'marker_recognition = multi_robot_challenge_23.marker_recognition:main',
+            'marker_recognition = multi_robot_challenge_23.marker_recognition:main',
             
         ],
     },

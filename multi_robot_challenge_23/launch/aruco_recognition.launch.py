@@ -1,32 +1,57 @@
 import os
-from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
+from launch.actions import DeclareLaunchArgument
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
-from launch.actions import DeclareLaunchArgument
 
 def generate_launch_description():
-    namespace = LaunchConfiguration('namespace')
-    namespace_launch_arg = DeclareLaunchArgument(
-        'namespace',
-        default_value='tb3_5'
-    )
+    namespace_arg = DeclareLaunchArgument('namespace', default_value='tb3_0')
+    use_sim_time_arg = DeclareLaunchArgument('use_sim_time', default_value='true')
 
+    ns = LaunchConfiguration('namespace')
+    use_sim_time = LaunchConfiguration('use_sim_time')
+
+    frame_prefix = [ns, '/aruco_']
+
+    # aruco_node.py
     aruco_node = Node(
         package='multi_robot_challenge_23',
         executable='aruco_node',
-        namespace=namespace,
-        parameters=[{"marker_size": 0.5},
-                    {"aruco_dictionary_id": "DICT_5X5_250"},
-                    {"image_topic": "camera/image_raw"},
-                    {"camera_info_topic": "camera/camera_info"}]
+        name='aruco_node',
+        namespace=ns,
+        output='screen',
+        parameters=[{
+            'use_sim_time': use_sim_time,
+            'frame_prefix': frame_prefix,     
+            'image_topic': 'camera/image_raw',
+            'camera_info_topic': 'camera/camera_info',
+        }]
     )
 
-    # The package-local marker processing node is optional and may not be
-    # present in the workspace. This launch file only starts the third-party
-    # ArUco detector node and exposes a 'namespace' argument so it can be
-    # included per-robot from a top-level launch file.
+    # marker_recognition.py
+    marker_recognition = Node(
+        package='multi_robot_challenge_23',
+        executable='marker_recognition',
+        name='marker_recognition',
+        namespace=ns,
+        output='screen',
+        parameters=[{
+            'use_sim_time': use_sim_time,
+            'robot_name': ns,                      
+            'base_frame': [ns, '/base_link'],      
+            'pose_topic': 'aruco/poses',         
+            'ids_topic': 'aruco/ids',              
+            'standoff': 0.6,
+            'min_reobserve': 2,
+            'goal_timeout_sec': 10.0,
+            'aruco_prefix': frame_prefix,        
+            'map_frame': 'map'
+        }]
+    )
+
     return LaunchDescription([
-        namespace_launch_arg,
+        namespace_arg,
+        use_sim_time_arg,
         aruco_node,
+        marker_recognition,
     ])
