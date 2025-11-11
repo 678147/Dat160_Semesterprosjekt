@@ -38,6 +38,9 @@ setup(
             'go_to_point = multi_robot_challenge_23.go_to_point:main',
             'wall_follower = multi_robot_challenge_23.wallfollower:main',
             'coordinator = multi_robot_challenge_23.coordinator:main',
+            'aruco_node = multi_robot_challenge_23.aruco_node:main',
+           # 'marker_recognition = multi_robot_challenge_23.marker_recognition:main',
+            
         ],
     },
 )
