@@ -1,4 +1,3 @@
-# marker_recognition.py
 import math
 from typing import Optional
 
