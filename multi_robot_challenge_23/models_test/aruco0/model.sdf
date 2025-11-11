@@ -1,0 +1,38 @@
+<?xml version="1.0" ?>
+<sdf version="1.6">
+  <model name="aruco0">
+    <static>true</static>
+
+    <link name="link">
+      <visual name="vis">
+        <!-- Roter rundt X med 90 grader (π/2 rad) -->
+        <pose>0 0 0 1.5708 0 0</pose>
+        <geometry>
+          <plane>
+            <normal>0 0 1</normal>
+            <size>0.20 0.20</size>
+          </plane>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://aruco0/materials/scripts</uri>
+            <uri>model://aruco0/materials/textures</uri>
+            <name>aruco0/marker0</name>
+          </script>
+        </material>
+        <cast_shadows>false</cast_shadows>
+      </visual>
+
+      <collision name="col">
+        <!-- Samme rotasjon på kollisjonsobjektet -->
+        <pose>0 0 0 1.5708 0 0</pose>
+        <geometry>
+          <plane>
+            <normal>0 0 1</normal>
+            <size>0.20 0.20</size>
+          </plane>
+        </geometry>
+      </collision>
+    </link>
+  </model>
+</sdf>
