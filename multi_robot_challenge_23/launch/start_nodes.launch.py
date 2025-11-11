@@ -22,7 +22,7 @@ def generate_launch_description():
         'use_sim_time', default_value='true', description='Use simulation clock'
     )
     enable_aruco_arg = DeclareLaunchArgument(
-        'enable_aruco', default_value='false', description='Start ArUco detector per robot'
+        'enable_aruco', default_value='true', description='Start ArUco detector per robot'
     )
     use_sim_time = LaunchConfiguration('use_sim_time')
     enable_aruco = LaunchConfiguration('enable_aruco')
