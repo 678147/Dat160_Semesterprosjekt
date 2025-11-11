@@ -22,15 +22,11 @@ def generate_launch_description():
                     {"camera_info_topic": "camera/camera_info"}]
     )
 
-    marker_trans = Node(
-            package='multi_robot_challenge_23',
-            executable='marker_recognition',
-            name='marker_recognition',
-            parameters=[{"namespace": namespace}],
-    )
-
+    # The package-local marker processing node is optional and may not be
+    # present in the workspace. This launch file only starts the third-party
+    # ArUco detector node and exposes a 'namespace' argument so it can be
+    # included per-robot from a top-level launch file.
     return LaunchDescription([
         namespace_launch_arg,
         aruco_node,
-        marker_trans,
     ])

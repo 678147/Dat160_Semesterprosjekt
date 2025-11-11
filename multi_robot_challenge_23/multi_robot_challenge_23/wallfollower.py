@@ -12,13 +12,18 @@ class WallFollower(Node):
         super().__init__('wall_follower')
         self.get_logger().info('Startet WallFollower.')
 
+        # support namespacing via parameter 'robot_name'
+        self.declare_parameter('robot_name', '')
+        robot_name = self.get_parameter('robot_name').get_parameter_value().string_value
+        ns = f'/{robot_name}' if robot_name else ''
+
         #publisher kjørekommandoer til turtleboten fart + rotasjon
-        self.cmd_pub = self.create_publisher(Twist, '/cmd_vel', 10)
+        self.cmd_pub = self.create_publisher(Twist, f'{ns}/cmd_vel', 10)
         #leser avstand fra LIDAR
-        self.scan_sub = self.create_subscription(LaserScan, '/scan', self.clbk_scan, qos_profile_sensor_data)
+        self.scan_sub = self.create_subscription(LaserScan, f'{ns}/scan', self.clbk_scan, qos_profile_sensor_data)
 
         #Service som skrur wallfollower av og på i bug2controller er clienten.
-        self.srv = self.create_service(SetBool, 'wall_follow', self.handle_srv)
+        self.srv = self.create_service(SetBool, f'{ns}/wall_follow', self.handle_srv)
 
         #parametre
         self.following = False   #starter med false, wallfollower ikke på

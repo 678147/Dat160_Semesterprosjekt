@@ -49,8 +49,7 @@ def generate_launch_description():
         output='screen',
         parameters=[{"yaml_filename": map_file_path, "topic_name": "map", "frame_id": "map"}],
         # remappings=remappings
-    )
-    
+    )  
     # Starting a lifecycle manager that takes care of the map server
     lifecycle_manager = Node(
         package='nav2_lifecycle_manager',
@@ -83,7 +82,7 @@ def generate_launch_description():
             'yaw': second_tb3_yaw,
         }.items()
     )
-
+        
     # Starting rviz
     rviz_node = Node(
         package='rviz2',
