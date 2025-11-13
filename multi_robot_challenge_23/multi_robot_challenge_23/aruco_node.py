@@ -94,6 +94,10 @@ class ArucoNode(Node):
         #Finner aruco-markører
         corners, ids, _ = cv2.aruco.detectMarkers(frame, self.aruco_dict, parameters=self.aruco_params)
         
+        # Hvis vi ikke fant noen markører i dette bildet, stopp her
+        # (ellers ville ids vært None og ids.flatten() gitt feil)
+        if ids is None or len(ids) == 0:
+            return
 
         # Publisher ID-ene som ble funnet (overvåkes i RQT)
         id_msg = Int32MultiArray()
@@ -113,8 +117,6 @@ class ArucoNode(Node):
         pose_array = PoseArray()
         pose_array.header = msg.header #Tar med tidsstempel og hvilken ramme bildet tilhører
         
-        
-
         for (rvec, tvec, mid) in zip(rvecs, tvecs, ids.flatten()):
             pose = Pose()
             
